@@ -11,6 +11,20 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #ffffff;
       color: #1a1a1a;
+      opacity: 1;
+      transition: opacity 0.9s ease-in-out;
+    }
+
+    body.preload {
+      opacity: 0;
+    }
+
+    body.fade-out {
+      opacity: 0;
+    }
+
+    body.fade-in {
+      opacity: 1;
     }
 
     .top-section {
@@ -63,7 +77,7 @@
     }
   </style>
 </head>
-<body>
+<body class="preload">
 
   <div class="top-section">
     <p>Empório CTZ</p>
@@ -80,3 +94,26 @@
 
 </body>
 </html>
+
+<script>
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.body.classList.remove('preload');
+    }, 50); // pequeno delay pra garantir transição
+  });
+
+  // Fade-out ao sair da página
+  document.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', function (e) {
+      const isInternal = this.href && this.href.indexOf(location.hostname) !== -1;
+
+      if (isInternal && this.target !== '_blank' && this.href !== '#') {
+        e.preventDefault();
+        document.body.style.opacity = '0';
+        setTimeout(() => {
+          window.location.href = this.href;
+        }, 900); // mesmo tempo da transição
+      }
+    });
+  });
+</script>
