@@ -12,12 +12,14 @@
       background-color: #ffffff;
       color: #1a1a1a;
       opacity: 1;
-      transition: opacity 0.9s ease-in-out;
+      transform: scale(1);
+      transition: opacity 0.9s ease-in-out, transform 0.9s ease-in-out;
     }
-
+    
     body.preload {
       opacity: 0;
-    }
+      transform: scale(1.15); /* começa mais próximo */
+    }    
 
     body.fade-out {
       opacity: 0;
@@ -102,6 +104,13 @@
     }, 50); // pequeno delay pra garantir transição
   });
 
+  // Garante animação mesmo ao voltar do histórico
+  window.addEventListener("pageshow", (event) => {
+    if (event.persisted) {
+      document.body.classList.remove('preload');
+    }
+  });
+
   // Fade-out ao sair da página
   document.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', function (e) {
@@ -109,10 +118,18 @@
 
       if (isInternal && this.target !== '_blank' && this.href !== '#') {
         e.preventDefault();
+
+        const rect = this.getBoundingClientRect();
+        const originX = rect.left + rect.width / 2;
+        const originY = rect.top + rect.height / 2;
+        document.body.style.transformOrigin = `${originX}px ${originY}px`;
+
         document.body.style.opacity = '0';
+        document.body.style.transform = 'scale(1.15)';
+
         setTimeout(() => {
           window.location.href = this.href;
-        }, 900); // mesmo tempo da transição
+        }, 900);
       }
     });
   });
