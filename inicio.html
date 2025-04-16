@@ -10,7 +10,7 @@
       margin: 0;
       font-family: Arial, sans-serif;
       background-color: #fefefe;
-      opacity: 1;
+      opacity: 0;
       transition: opacity 0.9s ease-in-out, transform 0.9s ease;
       transform: scale(1);
       transform-origin: center center;
@@ -22,6 +22,10 @@
 
     body.fade-out {
       opacity: 0;
+    }
+
+    body.fade-in {
+      opacity: 1;
     }
 
     .top-bar {
@@ -219,36 +223,45 @@
 
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
+  function fadeInPage() {
     document.body.style.opacity = '1';
     document.body.style.transform = 'scale(1)';
     document.body.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+  }
 
-    document.querySelectorAll("a").forEach(link => {
-      link.addEventListener("click", function (e) {
-        const href = this.getAttribute("href");
-        const target = this.getAttribute("target");
+  // Quando a página é carregada
+  document.addEventListener("DOMContentLoaded", fadeInPage);
 
-        // Evita aplicar efeito se for abrir nova aba
-        if (target === "_blank") return;
+  // Quando a página volta do histórico (voltar do navegador)
+  window.addEventListener("pageshow", (event) => {
+    if (event.persisted) {
+      fadeInPage();
+    }
+  });
 
-        e.preventDefault();
+  // Fade-out nos links
+  document.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", function (e) {
+      const href = this.getAttribute("href");
+      const target = this.getAttribute("target");
+      if (target === "_blank") return;
 
-        const rect = this.getBoundingClientRect();
-        const originX = rect.left + rect.width / 2;
-        const originY = rect.top + rect.height / 2;
+      e.preventDefault();
 
-        document.body.style.transformOrigin = `${originX}px ${originY}px`;
-        document.body.style.opacity = '0';
-        document.body.style.transform = 'scale(1.10)';
+      const rect = this.getBoundingClientRect();
+      const originX = rect.left + rect.width / 2;
+      const originY = rect.top + rect.height / 2;
 
-        // Delay antes de redirecionar (mesmo para links externos)
-        setTimeout(() => {
-          window.location.href = href;
-        }, 900);
-      });
+      document.body.style.transformOrigin = `${originX}px ${originY}px`;
+      document.body.style.opacity = '0';
+      document.body.style.transform = 'scale(1.10)';
+
+      setTimeout(() => {
+        window.location.href = href;
+      }, 900);
     });
   });
 </script>
+
 
 
