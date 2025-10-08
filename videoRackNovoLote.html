@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutorial de Montagem - Empório CTZ</title>
+  <link rel="icon" type="image/png" href="Icone.jpg" />
+  <style>
+    body{
+      margin:0; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background:#fff; color:#1a1a1a; opacity:1; transform:scale(1);
+      transition:opacity .9s ease-in-out, transform .9s ease-in-out;
+    }
+    body.preload{opacity:0; transform:scale(1.15);}
+    .top-section{
+      background:#ecb342; height:300px; text-align:center; padding-top:60px;
+      border-bottom-left-radius:50% 80px; border-bottom-right-radius:50% 80px;
+    }
+    .top-section p{margin:0; font-size:14px;}
+    .top-section h1{margin:10px 0 5px; font-size:26px; font-weight:700;}
+    .top-section h2{margin:0; font-size:18px; font-weight:400;}
+
+    /* === CARD DO PDF === */
+    .pdf-section{
+      margin:-100px auto 48px;
+      max-width:1100px;          /* mais espaço para leitura */
+      background:#fff;
+      border-radius:12px;
+      box-shadow:0 10px 30px rgba(0,0,0,.08);
+      overflow:hidden;
+    }
+    .pdf-frame{
+      width:100%;
+      height:80vh;               /* 80% da altura da tela */
+      display:block;
+      border:none;
+    }
+    .video-caption{font-size:14px; color:#555; margin:10px 16px 0; text-align:left;}
+    .pdf-actions{ text-align:right; margin:8px 16px 16px; font-size:13px; }
+    .pdf-actions a{
+      text-decoration:none; color:#1a1a1a; border-bottom:1px dashed rgba(0,0,0,.25);
+    }
+
+    .pdf-footer {
+  display: flex;
+  justify-content: space-between; /* um puxa pra esquerda, outro pra direita */
+  align-items: center;            /* alinha verticalmente */
+  padding: 10px 16px 16px;
+  font-size: 14px;
+  color: #555;
+}
+.pdf-footer .pdf-actions {
+  margin: 0; 
+  font-size: 13px;
+}
+.pdf-footer a {
+  text-decoration: none;
+  color: #1a1a1a;
+  border-bottom: 1px dashed rgba(0,0,0,.25);
+  margin-left: 8px;
+}
+
+    @media (max-width: 1200px){ .pdf-section{ max-width:95%; } }
+  </style>
+</head>
+<body class="preload">
+  <div class="top-section">
+    <p>Empório CTZ</p>
+    <h1>Tutorial Rack de Lavanderia</h1>
+    <h2>Rack de Lavanderia</h2>
+  </div>
+
+  <div class="pdf-section">
+    <!-- 1) Tenta com <object> (melhor compatibilidade de embed) -->
+    <object class="pdf-frame"
+            data="Rack.pdf#view=FitH&pagemode=none"
+            type="application/pdf">
+      <!-- 2) Se o navegador bloquear o embed, cai no fallback com <iframe> -->
+      <iframe class="pdf-frame"
+              src="Rack.pdf#zoom=page-width&pagemode=none"
+              title="Manual de Montagem (PDF)"></iframe>
+      <!-- 3) Se ainda assim não renderizar, mostra links -->
+      <div style="padding:16px">
+        Seu navegador não conseguiu exibir o PDF embutido.
+        <a href="Rack.pdf" target="_blank" rel="noopener">Abrir em tela cheia</a> ·
+        <a href="Rack.pdf" download>Baixar PDF</a>
+      </div>
+    </object>
+
+    <div class="pdf-footer">
+  <div>Manual de Montagem (PDF)</div>
+  <div class="pdf-actions">
+    <a href="Rack.pdf" target="_blank" rel="noopener">Abrir em tela cheia</a> ·
+    <a href="Rack.pdf" download>Baixar PDF</a>
+  </div>
+</div>
+
+  <script>
+    window.addEventListener('load', () => {
+      setTimeout(() => document.body.classList.remove('preload'), 50);
+    });
+    window.addEventListener('pageshow', (e) => {
+      if (e.persisted) document.body.classList.remove('preload');
+    });
+    // (seu fade-out em links internos, se quiser manter, pode colar aqui)
+  </script>
+</body>
+</html>
